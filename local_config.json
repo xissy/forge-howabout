@@ -1,0 +1,17 @@
+{
+	"general": {},
+	"ios": {
+		"profiles": {
+			"DEFAULT": {
+				"provisioning_profile": "/Users/xissysnd/Downloads/howabout_dev.mobileprovision"
+			}
+		},
+		"simulatorsdk": "7.0",
+		"simulatorfamily": "iphone"
+	},
+	"android": {
+		"profiles": {
+			"DEFAULT": {}
+		}
+	}
+}

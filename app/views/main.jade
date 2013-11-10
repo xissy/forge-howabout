@@ -1,0 +1,110 @@
+header.navbar.navbar-inverse.navbar-fixed-top.bs-docs-nav(role='banner')
+  .container
+    .navbar-header
+      a.navbar-brand(href='#/') 이거어때?
+      .pull-right
+        form.navbar-search(ng-submit='onSubmitSearch(searchString)')
+          input(type='text', size='12', placeholder='노래 또는 가수', ng-model='searchString')
+          input(type='submit', value='검색')
+
+
+input#saveDialog(type='file', nwsaveas='이거어때.mp3')
+
+
+#alertDialog.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+        h4.modal-title 이거어때?
+      .modal-body
+        p#modalBodyMessage
+      .modal-footer
+        button.btn.btn-default(type='button', data-dismiss='modal') 닫기
+
+
+.container
+  #fixed-tabs-row.row
+    
+    ul#fixed-tabs.nav.nav-tabs.nav-fixed-tabs
+      li.active
+        a(href='#songs-tab', data-toggle='tab') 추천 노래
+      li
+        a(href='#playlist-tab', data-toggle='tab') 플레이리스트
+      li
+        a(href='#lyrics-tab', data-toggle='tab') 가사 보기
+    
+    #main-tab-content.tab-content.tab-fixed-contents
+      #songs-tab.tab-pane.active
+
+        #search-track-guide.song-guide(ng-show='track.isSearch')
+          h3 '{{track.searchString}}' 검색 결과
+
+        #selected-track-guide.song-guide(ng-show='track.trackTitle')
+          h3 {{track.trackTitle}} - {{track.artistName}}
+
+          .play-btn-group
+            .btn-group.btn-group-sm
+              button.btn.btn-default.btn-primary(type='button', ng-click='onClickListen(track)') 듣기
+
+              .btn-group.btn-group-sm
+                button.btn.btn-default.btn-danger.dropdown-toggle(type='button', data-toggle='dropdown') 추가 
+                  span.caret
+                ul.dropdown-menu(role='menu')
+                  li
+                    a(ng-click='onClickAddNext(track)') 다음곡으로
+                  li
+                    a(ng-click='onClickAddLast(track)') 마지막으로
+
+              //- button.btn.btn-default.btn-danger(type='button', ng-click='onClickDownload(track)') 다운로드
+
+
+        #track-list
+          ul.thumbnails
+            li#track.col-xs-6(ng-cloak, ng-repeat='track in tracks')
+              .thumbnail
+                a(ng-click='onClickTrack(track)')
+                  img(ng-src='{{track.posterImageUrl}}')
+                  p
+                    strong {{track.trackTitle}} - {{track.artistName}}
+
+                .play-btn-group
+                  .btn-group.btn-group-sm
+                    button.btn.btn-default.btn-primary(type='button', ng-click='onClickListen(track)') 듣기
+                      //- i.icon-play
+
+                    .btn-group.btn-group-sm
+                      button.btn.btn-default.btn-danger.dropdown-toggle(type='button', data-toggle='dropdown') 추가 
+                        span.caret
+                        //- i.icon-plus
+                      ul.dropdown-menu(role='menu')
+                        li
+                          a(ng-click='onClickAddNext(track)') 다음곡으로
+                        li
+                          a(ng-click='onClickAddLast(track)') 마지막으로
+
+                    //- button.btn.btn-default.btn-danger(type='button', ng-click='onClickDownload(track)') 다운로드
+                    //-   //- i.icon-download-alt
+
+
+      #playlist-tab.tab-pane
+        ul.list-group
+          .list-group-item(ng-clock, ng-repeat='track in playlist', ng-class='{"active": getPlaylistIndex() == $index}')
+            .left(ng-click='onClickPlayIndex($index)')
+              img.track-image(ng-src='{{track.posterImageUrl}}')
+              p
+                strong {{track.trackTitle}} - {{track.artistName}}
+            .right
+              .play-btn-group
+                .btn-group.btn-group-sm
+                  button.btn.btn-default.btn-primary(type='button', ng-click='onClickSearchByTrack(track)')
+                    i.fa.fa-search
+                  //- button.btn.btn-default.btn-warning(type='button', ng-click='onClickDownload(track)')
+                  //-   i.fa.fa-download-alt
+                  button.btn.btn-default.btn-danger(type='button', ng-click='onClickDeleteIndex($index)')
+                    i.fa.fa-times
+
+
+      #lyrics-tab.tab-pane
+        h3#lyrics-track
+        h4#lyrics

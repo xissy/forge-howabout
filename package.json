@@ -1,0 +1,41 @@
+{
+  "name": "forge-howabout",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Another new gen free music streaming player.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xissy/forge-howabout.git"
+  },
+  "keywords": [
+    "music",
+    "mp3",
+    "download",
+    "stream",
+    "streaming",
+    "free"
+  ],
+  "author": "Taeho Kim <xissysnd@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xissy/forge-howabout/issues"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-watch": "https://github.com/blai/grunt-contrib-watch/tarball/master",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-jade": "~0.8.0",
+    "grunt-contrib-less": "~0.7.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-forge": "git://github.com/MarkBorcherding/grunt-forge.git",
+    "browserify": "~2.35.1",
+    "coffeeify": "~0.5.2",
+    "grunt-browserify": "~1.2.11"
+  }
+}

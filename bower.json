@@ -1,0 +1,26 @@
+{
+  "name": "forge-howabout-app",
+  "version": "0.0.1",
+  "authors": [
+    "Taeho Kim <xissysnd@gmail.com>"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.3",
+    "bootstrap": "~3.0.2",
+    "font-awesome": "~4.0.3",
+    "angular": "~1.2.0",
+    "angular-route": "~1.2.0",
+    "angular-resource": "~1.2.0",
+    "angular-ui": "~0.4.0"
+  },
+  "devDependencies": {
+  }
+}

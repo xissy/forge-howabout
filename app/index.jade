@@ -1,0 +1,50 @@
+doctype 5
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    title 이거어때?
+
+    // script(src='https://trigger.io/catalyst/target/target-script-min.js#34906929-E5C3-47D4-B200-AA766230DDA5')
+    // script forge.enableDebug();
+
+    // build:css styles/style.usemin.css
+    link(href='bower_components/bootstrap/dist/css/bootstrap.css', media='screen', rel='stylesheet', type='text/css')
+    link(href='bower_components/font-awesome/css/font-awesome.css', rel='stylesheet', type='text/css')
+    link(href='styles/docs.css', rel='stylesheet', type='text/css')
+    link(href='styles/style.css', rel='stylesheet', type='text/css')
+    // endbuild
+  
+  body(ng-controller='MainController')
+    div(ng-view)
+
+    div(ng-include='"views/player.html"', onload='onPlayerLoaded()')
+
+    div#gs
+
+    // build:js scripts/script.usemin.js
+    script(type='text/javascript', src='bower_components/jquery/jquery.js')
+    script(type='text/javascript', src='bower_components/bootstrap/dist/js/bootstrap.js')
+    script(type='text/javascript', src='bower_components/angular/angular.js')
+    script(type='text/javascript', src='bower_components/angular-route/angular-route.js')
+    script(type='text/javascript', src='bower_components/angular-resource/angular-resource.js')
+    script(type='text/javascript', src='scripts/modules.js')
+    script(type='text/javascript', src='scripts/prepareApp.js')
+    script(type='text/javascript', src='scripts/services/Track.js')
+    script(type='text/javascript', src='scripts/services/RecommendedTrack.js')
+    script(type='text/javascript', src='scripts/services/PlayInfo.js')
+    script(type='text/javascript', src='scripts/services/PlayInfoSharedService.js')
+    script(type='text/javascript', src='scripts/services/PlaylistSharedService.js')
+    script(type='text/javascript', src='scripts/controllers/MainController.js')
+    script(type='text/javascript', src='scripts/controllers/PlayerController.js')
+    script(type='text/javascript', src='scripts/initApp.js')
+    // endbuild
+    
+    //- GA
+    script.
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-45029839-1', 'recom.io');
+      ga('send', 'pageview');
