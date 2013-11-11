@@ -37,7 +37,7 @@ howaboutApp.controller 'PlayerController', [
                   durationSec = parseInt durationSecs % 60
                   durationSec = "0#{durationSec}"  if durationSec < 10
 
-                  positionSecs = e.time
+                  positionSecs = if e.time? then e.time else e
                   positionSec = parseInt positionSecs % 60
                   positionSec = "0#{positionSec}"  if positionSec < 10
 

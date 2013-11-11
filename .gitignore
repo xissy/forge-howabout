@@ -23,6 +23,7 @@ app/bower_components
 
 forge-error.log
 development
+release
 .template
 .lib
 src

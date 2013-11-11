@@ -25,7 +25,7 @@ Grooveshark.getStreamingUrl = (songID, callback) ->
   if not songID? or songID.length is 0
     return callback new Error 'invalid SongID'
 
-  $.ajax
+  forge.request.ajax
     type: 'GET'
     url: 'http://html5.grooveshark.com/'
     headers:
@@ -41,9 +41,11 @@ Grooveshark.getStreamingUrl = (songID, callback) ->
     success: (html, headers) ->
       forge.logging.info "html: #{html}"
 
-      $('#gs').html html
+      scriptTags = html.match /<script[^>]*>[^<]*<\/script>/g
+      jsString = scriptTags[2]
+      jsString = jsString[31..-12]
 
-      jsString = $('#gs script').eq(2).text()
+      forge.logging.info "jsString: #{jsString}"
 
       window = {}
       GS = 
@@ -67,7 +69,9 @@ Grooveshark.getStreamingUrl = (songID, callback) ->
         parameters:
           secretKey: secretKey
 
-      $.ajax
+      forge.logging.info JSON.stringify body
+
+      forge.request.ajax
         type: 'POST'
         url: 'https://html5.grooveshark.com/more.php?getCommunicationToken'
         contentType: 'text/plain;charset=UTF-8'
@@ -110,7 +114,7 @@ Grooveshark.getStreamingUrl = (songID, callback) ->
               songID: songID
               country: window.GS.config.country
 
-          $.ajax
+          forge.request.ajax
             type: 'POST'
             url: 'https://html5.grooveshark.com/more.php?getStreamKeyFromSongIDEx'
             contentType: 'text/plain'
