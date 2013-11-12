@@ -10,6 +10,7 @@ howaboutApp.controller 'PlayerController', [
     forge.playback_without_action.disable()    
 
     playState = 'stopped'
+    isInitializedPlayback = false
     isLoading = false
 
     audioElement = document.createElement 'audio'
@@ -18,7 +19,7 @@ howaboutApp.controller 'PlayerController', [
       audioElement.pause()
       setPlayButtonIcon getPlayState()
     
-    audioElement.addEventListener 'play', ->
+    audioElement.addEventListener 'playing', ->
       isLoading = false
       playState = 'playing'
       setPlayButtonIcon getPlayState()
@@ -69,16 +70,16 @@ howaboutApp.controller 'PlayerController', [
       audioElement.load()
       audioElement.play()
 
-      forge.file.cacheURL playInfoSharedService.streamUrl
-      ,
-        (file) ->
-          forge.media.createAudioPlayer file
-          ,
-            (player) ->
-              player.play ->
-                player.stop()
-              ,
-                ->
+      if not isInitializedPlayback
+        forge.file.cacheURL playInfoSharedService.streamUrl
+        ,
+          (file) ->
+            forge.media.createAudioPlayer file
+            ,
+              (player) ->
+                player.play ->
+                  player.stop()
+                  isInitializedPlayback = true
 
 
     $scope.$on 'onBroadcastStartLoadingSong', ->
