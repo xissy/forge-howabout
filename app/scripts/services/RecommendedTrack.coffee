@@ -9,6 +9,6 @@ howaboutServices.factory 'RecommendedTrack', [
         method: 'GET'
         isArray: true
         params:
-          limit: '500'
+          limit: '50'
           
 ]

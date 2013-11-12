@@ -13,11 +13,13 @@ module.exports = (grunt) ->
       dev:
         src: [
           'app/scripts/modules/grooveshark-streaming/index.js'
+          'app/scripts/modules/node-ytdl/lib/index.js'
         ]
         dest: 'src/scripts/modules.js'
         options:
           alias: [
             'app/scripts/modules/grooveshark-streaming/index.js:grooveshark-streaming'
+            'app/scripts/modules/node-ytdl/lib/index.js:ytdl'
           ]
           transform: [ 'coffeeify' ]
 

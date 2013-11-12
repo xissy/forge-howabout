@@ -96,7 +96,7 @@ howaboutApp.controller 'PlayerController', [
       playState = 'stopped'
       setPlayButtonIcon getPlayState()
 
-      # playlistSharedService.playNext()
+      playlistSharedService.playNext()
 
 
     showPlayButton = ->

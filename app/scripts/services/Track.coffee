@@ -12,12 +12,12 @@ howaboutServices.factory 'Track', [
         isArray: true
         params:
           trackId: 'random'
-          limit: '100'
+          limit: '50'
       search:
         method: 'GET'
         isArray: true
         params:
           trackId: 'search'
-          limit: '100'
+          limit: '50'
           
 ]

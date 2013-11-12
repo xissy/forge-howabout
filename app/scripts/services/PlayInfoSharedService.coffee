@@ -1,7 +1,5 @@
 { Grooveshark } = require 'grooveshark-streaming'
-# GS = require 'grooveshark-streaming'
-# ytdl = require 'ytdl'
-# fs = require 'fs'
+ytdl = require 'ytdl'
 
 
 howaboutServices.factory 'PlayInfoSharedService', [
@@ -16,20 +14,19 @@ howaboutServices.factory 'PlayInfoSharedService', [
       ,
         ->
           if not playInfo.tinysongId?
-            # return ytdl.getInfo playInfo.youtubeMovieUrl, (err, youtubeInfo) ->
-            #   return callback err  if err?
-            #   return callback new Error 'no youtubeInfo.formats'  if not youtubeInfo?.formats?
+            return ytdl.getInfo playInfo.youtubeMovieUrl, (err, youtubeInfo) ->
+              return callback err  if err?
+              return callback new Error 'no youtubeInfo.formats'  if not youtubeInfo?.formats?
 
-            #   for format in youtubeInfo.formats
-            #     if format.itag is '18'
-            #       streamUrl = format.url
-            #       break
+              for format in youtubeInfo.formats
+                if format.itag is '18'
+                  streamUrl = format.url
+                  break
 
-            #   if not streamUrl?
-            #     return callback new Error 'no youtube itag 18 streamUrl'
+              if not streamUrl?
+                return callback new Error 'no youtube itag 18 streamUrl'
 
-            #   callback null, streamUrl, playInfo.lyrics
-            callback new Error 'not support youtube yet.'
+              callback null, streamUrl, playInfo.lyrics
 
           forge.logging.info 'playInfo'
           forge.logging.info JSON.stringify playInfo
