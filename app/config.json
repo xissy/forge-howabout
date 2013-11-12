@@ -33,6 +33,12 @@
 		},
 		"file": {
 			"version": "2.2"
+		},
+		"damn_you_form_assist": {
+			"version": "2.1"
+		},
+		"playback_without_action": {
+			"version": "0.9"
 		}
 	}
 }

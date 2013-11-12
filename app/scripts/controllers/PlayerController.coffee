@@ -6,14 +6,68 @@ howaboutApp.controller 'PlayerController', [
   'PlayInfoSharedService'
   'PlaylistSharedService'
   ($scope, $route, $http, playInfoSharedService, playlistSharedService) ->
-    audioPlayer = null
+    
+    forge.playback_without_action.disable()    
+
     playState = 'stopped'
+    isLoading = false
+
+    audioElement = document.createElement 'audio'
+
+    audioElement.addEventListener 'error', ->
+      audioElement.pause()
+      setPlayButtonIcon getPlayState()
+    
+    audioElement.addEventListener 'play', ->
+      isLoading = false
+      playState = 'playing'
+      setPlayButtonIcon getPlayState()
+    
+    audioElement.addEventListener 'pause', ->
+      if isLoading is true
+        showLoadingIcon()
+        $scope.$apply ->
+          $scope.durationTimeString = '0:00'
+          $scope.positionTimeString = '0:00'
+          $scope.progressPercentStyle =
+            width: '0%'
+      else
+        playState = 'paused'
+        setPlayButtonIcon getPlayState()
+    
+    audioElement.addEventListener 'timeupdate', ->
+      return  if isLoading is true
+      
+      durationSecs = audioElement.duration
+      positionSecs = audioElement.currentTime
+      durationSec = parseInt durationSecs % 60
+      positionSec = parseInt positionSecs % 60
+      durationSec = "0#{durationSec}"  if durationSec < 10
+      positionSec = "0#{positionSec}"  if positionSec < 10
+      progressPercent = parseInt positionSecs * 100 / durationSecs
+
+      $scope.$apply ->
+        if "#{parseInt durationSecs / 60}:#{durationSec}" isnt 'NaN:NaN'
+          $scope.durationTimeString = "#{parseInt durationSecs / 60}:#{durationSec}"
+        $scope.positionTimeString = "#{parseInt positionSecs / 60}:#{positionSec}"
+        $scope.progressPercentStyle =
+          width: "#{progressPercent}%"
+
+    audioElement.addEventListener 'ended', ->
+      $scope.$apply ->
+        $scope.durationTimeString = '0:00'
+        $scope.positionTimeString = '0:00'
+        $scope.progressPercentStyle =
+          width: '0%'
+      playState = 'stopped'
+      setPlayButtonIcon getPlayState()
+      playlistSharedService.playNext()
+
 
     $scope.$on 'onBroadcastPlayInfo', ->
-      if audioPlayer?
-        audioPlayer.stop()
-        audioPlayer.destroy()
-        audioPlayer = null
+      audioElement.setAttribute 'src', playInfoSharedService.streamUrl
+      audioElement.load()
+      audioElement.play()
 
       forge.file.cacheURL playInfoSharedService.streamUrl
       ,
@@ -21,60 +75,21 @@ howaboutApp.controller 'PlayerController', [
           forge.media.createAudioPlayer file
           ,
             (player) ->
-              audioPlayer = player
-
               player.play ->
-                playState = 'playing'
-                setPlayButtonIcon getPlayState()
+                player.stop()
               ,
                 ->
-                  playState = 'stopped'
-                  setPlayButtonIcon getPlayState()
-
-              player.positionChanged.addListener (e) ->
-                player.duration (duration) ->
-                  durationSecs = duration
-                  durationSec = parseInt durationSecs % 60
-                  durationSec = "0#{durationSec}"  if durationSec < 10
-
-                  positionSecs = if e.time? then e.time else e
-                  positionSec = parseInt positionSecs % 60
-                  positionSec = "0#{positionSec}"  if positionSec < 10
-
-                  progressPercent = parseInt positionSecs * 100 / durationSecs
-
-                  $scope.$apply ->
-                    $scope.durationTimeString = "#{parseInt durationSecs / 60}:#{durationSec}"
-                    $scope.positionTimeString = "#{parseInt positionSecs / 60}:#{positionSec}"
-                    $scope.progressPercentStyle =
-                      width: "#{progressPercent}%"
-
-                  if positionSecs >= durationSecs - 1
-                    setPlayButtonIcon getPlayState()
-                    $scope.$apply ->
-                      $scope.durationTimeString = '0:00'
-                      $scope.positionTimeString = '0:00'
-                      $scope.progressPercentStyle =
-                        width: '0%'
-
-                    playState = 'stopped'
-                    setPlayButtonIcon getPlayState()
-                    
-                    playlistSharedService.playNext()
-      ,
-        (content) ->
-          playState = 'stopped'
-          setPlayButtonIcon getPlayState()
 
 
     $scope.$on 'onBroadcastStartLoadingSong', ->
-      audioPlayer.pause()  if audioPlayer?
-
+      isLoading = true
       showLoadingIcon()
-      $scope.durationTimeString = '0:00'
-      $scope.positionTimeString = '0:00'
-      $scope.progressPercentStyle =
-        width: '0%'
+      $scope.$apply ->
+        $scope.durationTimeString = '0:00'
+        $scope.positionTimeString = '0:00'
+        $scope.progressPercentStyle =
+          width: '0%'
+      audioElement.pause()
 
 
     $scope.$on 'onBroadcastNoSteamingUrl', ->
@@ -117,11 +132,11 @@ howaboutApp.controller 'PlayerController', [
     $scope.onClickPlay = ->
       switch getPlayState()
         when 'playing'
-          audioPlayer.pause()  if audioPlayer?
+          audioElement.pause()
           playState = 'paused'
           setPlayButtonIcon getPlayState()
         when 'paused'
-          audioPlayer.play()  if audioPlayer?
+          audioElement.play()
           playState = 'playing'
           setPlayButtonIcon getPlayState()
         else
